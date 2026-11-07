@@ -7,4 +7,3 @@ cli:
     params include , number of clients , service time , workload parametres (1 request per n seconds) = arrival time ,... etc
 
 
-Logic 
