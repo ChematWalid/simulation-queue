@@ -14,8 +14,8 @@ enum ServerState {
 
 struct Client {
     int id;
-    double TimeOfArrival;
-    double TimeOfStartService;
+    double ArrivalTime;
+    double StartServiceTime;
     double ServiceTime;
 };
 
@@ -71,7 +71,7 @@ void initialisation() {
 void Arrival() {
     Client c{};
     c.id = nextId++;
-    c.TimeOfArrival = Tnow;
+    c.ArrivalTime = Tnow;
     c.ServiceTime = SERVICE_TIME;
     waitingQueue.push(c);
 
@@ -86,7 +86,7 @@ void StartService() {
 
     clientInService = waitingQueue.front();
     waitingQueue.pop();
-    clientInService.TimeOfStartService = Tnow;
+    clientInService.StartServiceTime = Tnow;
 
     createEvent(DEPARTURE, Tnow + clientInService.ServiceTime);
 }
@@ -94,8 +94,8 @@ void StartService() {
 void Departure() {
     server = IDLE;
 
-    sumResponse += Tnow - clientInService.TimeOfArrival; // response time = departure time - arrival time
-    sumWaiting  += clientInService.TimeOfStartService - clientInService.TimeOfArrival; // waiting time = start service time - arrival time
+    sumResponse += Tnow - clientInService.ArrivalTime; // response time = departure time - arrival time
+    sumWaiting  += clientInService.StartServiceTime - clientInService.ArrivalTime; // waiting time = start service time - arrival time
     clientServed++;
 
     if (!waitingQueue.empty())
